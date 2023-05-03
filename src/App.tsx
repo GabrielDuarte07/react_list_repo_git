@@ -1,5 +1,7 @@
-function App() {
-  return <h1>hello world</h1>;
+import Routing from "./Routing";
+
+function App(): React.ReactElement {
+  return <Routing />;
 }
 
 export default App;
