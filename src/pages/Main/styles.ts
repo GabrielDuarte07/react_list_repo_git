@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 
 export const Container = styled.div`
   max-width: 700px;
@@ -20,17 +20,27 @@ export const Container = styled.div`
   }
 `;
 
-export const Form = styled.form`
+export const Form = styled.form<{ error: boolean }>`
   margin-top: 30px;
   display: flex;
   flex-direction: row;
 
   input {
     flex: 1;
-    border: 1px solid #ddd;
+    border: 1px solid ${({ error }) => (error ? "#FF0000" : "#DDD")};
     padding: 10px 15px;
     border-radius: 4px;
     font-size: 17px;
+  }
+`;
+
+const animated = keyframes`
+  from{
+    transform: rotate(0deg);
+  }
+
+  to{
+    transform: rotate(360deg);
   }
 `;
 
@@ -43,4 +53,48 @@ export const SubmitButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      svg {
+        animation: ${animated} 2s linear infinite;
+      }
+    `}
+`;
+
+export const List = styled.ul`
+  list-style: none;
+  margin-top: 20px;
+
+  li {
+    padding: 15px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    & + li {
+      border-top: 1px solid #eee;
+    }
+
+    a {
+      color: #0d2636;
+      text-decoration: none;
+    }
+  }
+`;
+
+export const DeleteButton = styled.button`
+  background: transparent;
+  color: #0d3636;
+  border: 0;
+  padding: 8px 7px;
+  outline: 0;
+  border-radius: 4px;
 `;
