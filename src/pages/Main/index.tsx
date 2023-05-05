@@ -10,16 +10,13 @@ import { FaGithub, FaPlus, FaSpinner, FaBars, FaTrash } from "react-icons/fa";
 import { Container, Form, SubmitButton, List, DeleteButton } from "./styles";
 import api from "../../services/api";
 import { Link } from "react-router-dom";
-
-type TypeRepositorio = {
-  name: string;
-};
+import { TypeNameRepositorio } from "../../types/types";
 
 const Main = (): ReactElement => {
   const [newRepo, setNewRepo] = useState<string>("");
-  const [repositorios, setRepositorios] = useState<TypeRepositorio[] | null>(
-    null
-  );
+  const [repositorios, setRepositorios] = useState<
+    TypeNameRepositorio[] | null
+  >(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<boolean>(false);
 
@@ -83,7 +80,7 @@ const Main = (): ReactElement => {
 
   const handleDelete = useCallback(
     (name: string): void => {
-      const find = Array.from(repositorios as TypeRepositorio[]).filter(
+      const find = Array.from(repositorios as TypeNameRepositorio[]).filter(
         (r) => r.name !== name
       );
       setRepositorios(find);
@@ -126,7 +123,7 @@ const Main = (): ReactElement => {
                 </DeleteButton>
                 {repo.name}
               </span>
-              <Link to="/">
+              <Link to={`/repositorio/${encodeURIComponent(repo.name)}`}>
                 <FaBars size={20} />
               </Link>
             </li>

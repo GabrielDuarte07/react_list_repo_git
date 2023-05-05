@@ -9,7 +9,7 @@ const Routing = (): ReactElement => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/repositorio" element={<Repositorio />} />
+        <Route path="/repositorio/:name" element={<Repositorio />} />
       </Routes>
     </BrowserRouter>
   );
