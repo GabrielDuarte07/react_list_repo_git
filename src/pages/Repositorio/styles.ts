@@ -125,3 +125,20 @@ export const PageActions = styled.div`
     }
   }
 `;
+
+export const FilterList = styled.div<{ active: number }>`
+  margin: 15px 0;
+
+  button {
+    outline: 0;
+    border: 0;
+    padding: 8px;
+    border-radius: 4px;
+    margin: 0 3px;
+
+    &:nth-child(${({ active }) => active + 1}) {
+      background-color: #0071db;
+      color: #fff;
+    }
+  }
+`;

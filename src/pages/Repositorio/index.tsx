@@ -9,6 +9,7 @@ import {
   BackButton,
   IssuesList,
   PageActions,
+  FilterList,
 } from "./styles";
 import { TypeRepositorio, TypeIssue } from "../../types/types";
 
@@ -18,6 +19,13 @@ const Repositorio = (): ReactElement => {
   const [issues, setIssues] = useState<TypeIssue[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
+  const [filterIndex, setFilterINdex] = useState<number>(0);
+
+  const filters = [
+    { state: "all", label: "Todas", active: true },
+    { state: "open", label: "Abertas", active: false },
+    { state: "closed", label: "Fechadas", active: false },
+  ];
 
   useEffect(() => {
     async function load() {
@@ -26,7 +34,7 @@ const Repositorio = (): ReactElement => {
         api.get(`/repos/${name}/issues`, {
           params: {
             per_page: 5,
-            state: "open",
+            state: filters.find((f) => f.active)?.state,
           },
         }),
       ]);
@@ -43,7 +51,7 @@ const Repositorio = (): ReactElement => {
     async function loadIssues() {
       const response = await api.get(`/repos/${name}/issues`, {
         params: {
-          state: "open",
+          state: filters[filterIndex].state,
           page,
           per_page: 5,
         },
@@ -52,11 +60,13 @@ const Repositorio = (): ReactElement => {
       setIssues(response.data);
     }
     loadIssues();
-  }, [page, name]);
+  }, [page, name, filterIndex]);
 
   const handlePage = (action: string): void => {
     setPage((prev) => (action === "prev" ? prev - 1 : prev + 1));
   };
+
+  const handleFilter = (index: number): void => setFilterINdex(index);
 
   if (loading) {
     return (
@@ -83,6 +93,17 @@ const Repositorio = (): ReactElement => {
           </>
         )}
       </Owner>
+      <FilterList active={filterIndex}>
+        {filters.map((filter, index) => (
+          <button
+            type="button"
+            key={filter.label}
+            onClick={() => handleFilter(index)}
+          >
+            {filter.label}
+          </button>
+        ))}
+      </FilterList>
       <IssuesList>
         {issues &&
           issues.map((i) => (
